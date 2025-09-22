@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Biblioteca Análisis de Sistemas</title>
+</head>
+<body>
+	<h1>Bienvenido a la Biblioteca Central</h1>
+	<h1 th:text="${mensaje}"></h1>
+	<h1 th:text="${ejemplares}"></h1>
+	<h1 th:text="${cantidad}"></h1>
+	<h1 th:text="${disponible}"></h1>
+	<h1 th:text="${fecha}"></h1>
+	<h1 th:text="${multa}"></h1>
+	<h1 th:text="${libro.isbn}"></h1>
+	<h1 th:text="${libro.nombre}"></h1>
+	<h1 th:text="${libro.autor}"></h1>
+	<h1 th:text="${libro.anioPublicacion}"></h1>
+</body>
+</html>
