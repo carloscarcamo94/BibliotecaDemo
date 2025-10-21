@@ -1,20 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Biblioteca Análisis de Sistemas</title>
+    <meta charset="UTF-8">
+    <title>Biblioteca Central</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        h2 { margin-top: 30px; }
+    </style>
 </head>
-<body>
-	<h1>Bienvenido a la Biblioteca Central</h1>
-	<h1 th:text="${mensaje}"></h1>
-	<h1 th:text="${ejemplares}"></h1>
-	<h1 th:text="${cantidad}"></h1>
-	<h1 th:text="${disponible}"></h1>
-	<h1 th:text="${fecha}"></h1>
-	<h1 th:text="${multa}"></h1>
-	<h1 th:text="${libro.isbn}"></h1>
-	<h1 th:text="${libro.nombre}"></h1>
-	<h1 th:text="${libro.autor}"></h1>
-	<h1 th:text="${libro.anioPublicacion}"></h1>
+<body class="bg-light">
+    <h1 class="text-center">Bienvenido a la Biblioteca Central</h1>
+
+    <!-- LIBROS -->
+    <h2 class="text-center">Libros Disponibles</h2>
+    <table class="table table-hover table-bordered table-dark text-center">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Nombre</th>
+                <th>Autor</th>
+                <th>Año</th>
+                <th>Editorial</th>
+                <th>Clasificación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="libro : ${libros}">
+                <td th:text="${libro.isbn}"></td>
+                <td th:text="${libro.nombre}"></td>
+                <td th:text="${libro.autor}"></td>
+                <td th:text="${libro.anioPublicacion}"></td>
+                <td th:text="${libro.editorial}"></td>
+                <td th:text="${libro.clasificacion}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- AUTORES -->
+    <h2 class="text-center">Autores</h2>
+    <ul class="text-center list-group mb-4">
+        <li class="list-unstyled" th:each="autor : ${autores}">
+            <strong th:text="${autor.nombre}"></strong> - <span th:text="${autor.nacionalidad}"></span>
+        </li>
+    </ul>
+
+    <!-- EDITORIALES -->
+    <h2 class="text-center">Editoriales</h2>
+    <ul class="text-center list-group mb-4">
+        <li class="list-unstyled" th:each="editorial : ${editoriales}">
+            <strong th:text="${editorial.nombre}"></strong> (<span th:text="${editorial.pais}"></span>)
+        </li>
+    </ul>
+
+    <!-- CLASIFICACIONES -->
+    <h2 class="text-center">Clasificaciones</h2>
+    <ul class="text-center list-group mb-4">
+        <li class="list-unstyled" th:each="clasificacion : ${clasificaciones}">
+            <strong th:text="${clasificacion.nombre}"></strong>: 
+            <span th:text="${clasificacion.descripcion}"></span>
+        </li>
+    </ul>
 </body>
 </html>

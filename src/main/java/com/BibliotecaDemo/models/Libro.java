@@ -1,13 +1,52 @@
 package com.BibliotecaDemo.models;
 
+import java.util.Date;
+
 public class Libro {
 	
 	//Propiedades
 	private String isbn;
 	private String nombre;
 	private String autor;
-	private String anioPublicacion;
+	private String editorial;
+	private Date anioPublicacion;
+	private String clasificacion;
+	private int numeroInventario;
+	private boolean activo;
 	
+	
+	public int getNumeroInventario() {
+		return numeroInventario;
+	}
+
+	public void setNumeroInventario(int numeroInventario) {
+		this.numeroInventario = numeroInventario;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	public String getEditorial() {
+		return editorial;
+	}
+
+	public void setEditorial(String editorial) {
+		this.editorial = editorial;
+	}
+
+	public String getClasificacion() {
+		return clasificacion;
+	}
+
+	public void setClasificacion(String clasificacion) {
+		this.clasificacion = clasificacion;
+	}
+
 	//Métodos Get and Set
 	public String getIsbn() {
 		return isbn;
@@ -33,11 +72,12 @@ public class Libro {
 		this.autor = autor;
 	}
 	
-	public String getAnioPublicacion() {
+	public Date getAnioPublicacion() {
 		return anioPublicacion;
 	}
-	
-	public void setAnioPublicacion(String anioPublicacion) {
+
+	public void setAnioPublicacion(Date anioPublicacion) {
 		this.anioPublicacion = anioPublicacion;
 	}
+	
 }
