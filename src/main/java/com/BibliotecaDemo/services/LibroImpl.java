@@ -1,9 +1,14 @@
 package com.BibliotecaDemo.services;
 
 import java.sql.*;
+
+import org.springframework.stereotype.Repository;
+
 import com.BibliotecaDemo.models.Libro;
 import com.BibliotecaDemo.utils.ConexionMySql;
 
+
+@Repository
 public class LibroImpl implements ILibro {
     
 	private ConexionMySql conexion;
@@ -14,7 +19,7 @@ public class LibroImpl implements ILibro {
 
     @Override
     public boolean guardar(Libro libro) {
-        String sql = "INSERT INTO libro (isbn, nombre, autor, editorial, anioPublicacion, clasificacion, numeroInventario, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO libro (isbn, nombre, autor, editorial, anioPublicacion, clasificacion, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -24,8 +29,7 @@ public class LibroImpl implements ILibro {
             ps.setString(4, libro.getEditorial());
             ps.setDate(5, new java.sql.Date(libro.getAnioPublicacion().getTime())); // convierte java.util.Date a java.sql.Date
             ps.setString(6, libro.getClasificacion());
-            ps.setInt(7, libro.getNumeroInventario());
-            ps.setBoolean(8, libro.isActivo());
+            ps.setBoolean(7, libro.isActivo());
 
             int filas = ps.executeUpdate();
             return filas > 0;
@@ -38,23 +42,23 @@ public class LibroImpl implements ILibro {
 
 
     @Override
-    public Libro recuperar(String book) {
-        String sql = "SELECT * FROM libro WHERE isbn = ?";
+    public Libro recuperar(int idInventario) {
+        String sql = "SELECT * FROM libro WHERE idInventario = ?";
         try (Connection conn = conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, book);
+            ps.setInt(1, idInventario);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 Libro libro = new Libro();
+                libro.setIdInventario(rs.getInt("idInventario"));
                 libro.setIsbn(rs.getString("isbn"));
                 libro.setNombre(rs.getString("nombre"));
                 libro.setAutor(rs.getString("autor"));
                 libro.setEditorial(rs.getString("editorial"));
                 libro.setAnioPublicacion(rs.getDate("anioPublicacion"));
                 libro.setClasificacion(rs.getString("clasificacion"));
-                libro.setNumeroInventario(rs.getInt("numeroInventario"));
                 libro.setActivo(rs.getBoolean("activo"));
                 return libro;
             }
@@ -68,7 +72,7 @@ public class LibroImpl implements ILibro {
 
     @Override
     public boolean modificar(Libro libro) {
-        String sql = "UPDATE libro SET nombre = ?, autor = ?, editorial = ?, anioPublicacion = ?, clasificacion = ?, numeroInventario = ?, activo = ? WHERE isbn = ?";
+        String sql = "UPDATE libro SET nombre = ?, autor = ?, editorial = ?, anioPublicacion = ?, clasificacion = ?, activo = ? WHERE idInventario = ?";
         try (Connection conn = conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -77,9 +81,8 @@ public class LibroImpl implements ILibro {
             ps.setString(3, libro.getEditorial());
             ps.setDate(4, new java.sql.Date(libro.getAnioPublicacion().getTime()));
             ps.setString(5, libro.getClasificacion());
-            ps.setInt(6, libro.getNumeroInventario());
-            ps.setBoolean(7, libro.isActivo());
-            ps.setString(8, libro.getIsbn());
+            ps.setBoolean(6, libro.isActivo());
+            ps.setString(7, libro.getIsbn());
 
             int filas = ps.executeUpdate();
             return filas > 0;
@@ -92,12 +95,12 @@ public class LibroImpl implements ILibro {
 
 
     @Override
-    public boolean borrar(String book) {
-        String sql = "DELETE FROM libro WHERE isbn = ?";
+    public boolean borrar(int idInventario) {
+        String sql = "DELETE FROM libro WHERE idInventario = ?";
         try (Connection conn = conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, book);
+            ps.setInt(1, idInventario);
             int filas = ps.executeUpdate();
             return filas > 0;
 

@@ -5,22 +5,22 @@ import java.util.Date;
 public class Libro {
 	
 	//Propiedades
+	private int idInventario;
 	private String isbn;
 	private String nombre;
 	private String autor;
 	private String editorial;
 	private Date anioPublicacion;
 	private String clasificacion;
-	private int numeroInventario;
 	private boolean activo;
 	
 	
-	public int getNumeroInventario() {
-		return numeroInventario;
+	public int getIdInventario() {
+		return idInventario;
 	}
 
-	public void setNumeroInventario(int numeroInventario) {
-		this.numeroInventario = numeroInventario;
+	public void setIdInventario(int numeroInventario) {
+		this.idInventario = numeroInventario;
 	}
 
 	public boolean isActivo() {

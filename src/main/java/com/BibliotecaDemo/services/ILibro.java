@@ -5,7 +5,7 @@ import com.BibliotecaDemo.models.Libro;
 public interface ILibro {
 
 	public boolean guardar(Libro libro);
-	public Libro recuperar(String libro);
+	public Libro recuperar(int IdInventario);
 	public boolean modificar(Libro libro);
-	public boolean borrar(String libro);
+	public boolean borrar(int idInventario);
 }
