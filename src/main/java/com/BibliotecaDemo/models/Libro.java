@@ -1,5 +1,6 @@
 package com.BibliotecaDemo.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class Libro {
@@ -10,6 +11,7 @@ public class Libro {
 	private String nombre;
 	private String autor;
 	private String editorial;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date anioPublicacion;
 	private String clasificacion;
 	private boolean activo;

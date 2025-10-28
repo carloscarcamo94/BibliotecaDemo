@@ -2,66 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Biblioteca Central</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; }
-        h2 { margin-top: 30px; }
-    </style>
+    <title>Biblioteca Demo</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
+
 <body class="bg-light">
-    <h1 class="text-center">Bienvenido a la Biblioteca Central</h1>
 
-    <!-- LIBROS -->
-    <h2 class="text-center">Libros Disponibles</h2>
-    <table class="table table-hover table-bordered table-dark text-center">
-        <thead>
-            <tr>
-                <th>ISBN</th>
-                <th>Nombre</th>
-                <th>Autor</th>
-                <th>Año</th>
-                <th>Editorial</th>
-                <th>Clasificación</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="libro : ${libros}">
-                <td th:text="${libro.isbn}"></td>
-                <td th:text="${libro.nombre}"></td>
-                <td th:text="${libro.autor}"></td>
-                <td th:text="${libro.anioPublicacion}"></td>
-                <td th:text="${libro.editorial}"></td>
-                <td th:text="${libro.clasificacion}"></td>
-            </tr>
-        </tbody>
-    </table>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">Biblioteca Demo</a>
+    </div>
+</nav>
 
-    <!-- AUTORES -->
-    <h2 class="text-center">Autores</h2>
-    <ul class="text-center list-group mb-4">
-        <li class="list-unstyled" th:each="autor : ${autores}">
-            <strong th:text="${autor.nombre}"></strong> - <span th:text="${autor.nacionalidad}"></span>
-        </li>
-    </ul>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-semibold">Listado de Libros</h2>
+        <a th:href="@{/libro/nuevo}" class="btn btn-success">+ Nuevo Libro</a>
+    </div>
 
-    <!-- EDITORIALES -->
-    <h2 class="text-center">Editoriales</h2>
-    <ul class="text-center list-group mb-4">
-        <li class="list-unstyled" th:each="editorial : ${editoriales}">
-            <strong th:text="${editorial.nombre}"></strong> (<span th:text="${editorial.pais}"></span>)
-        </li>
-    </ul>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ID Inventario</th>
+                        <th>ISBN</th>
+                        <th>Nombre</th>
+                        <th>Autor</th>
+                        <th>Editorial</th>
+                        <th>Año</th>
+                        <th>Clasificación</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody th:if="${libros != null}" th:each="libro : ${libros}" class="text-center">
+                    <tr>
+                        <td th:text="${libro.idInventario}"></td>
+                        <td th:text="${libro.isbn}"></td>
+                        <td th:text="${libro.nombre}"></td>
+                        <td th:text="${libro.autor}"></td>
+                        <td th:text="${libro.editorial}"></td>
+                        <td th:text="${libro.anioPublicacion}"></td>
+                        <td th:text="${libro.clasificacion}"></td>
+                        <td>
+                            <span th:if="${libro.activo}" class="badge bg-success">Sí</span>
+                            <span th:if="${!libro.activo}" class="badge bg-danger">No</span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/libro/editar/' + ${libro.idInventario}}" class="btn btn-warning btn-sm me-1">
+                                ✏️ Editar
+                            </a>
+                            <a th:href="@{'/libro/eliminar/' + ${libro.idInventario}}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('¿Seguro que deseas eliminar este libro?')">
+                                🗑️ Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody th:if="${#lists.isEmpty(libros)}">
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No hay libros registrados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-    <!-- CLASIFICACIONES -->
-    <h2 class="text-center">Clasificaciones</h2>
-    <ul class="text-center list-group mb-4">
-        <li class="list-unstyled" th:each="clasificacion : ${clasificaciones}">
-            <strong th:text="${clasificacion.nombre}"></strong>: 
-            <span th:text="${clasificacion.descripcion}"></span>
-        </li>
-    </ul>
+<footer class="bg-primary text-white text-center py-3 mt-5 shadow-lg">
+    <p class="mb-0">&copy; 2025 Biblioteca Demo | Desarrollado por <strong>CS - IT Solutions</strong></p>
+</footer>
+
 </body>
 </html>

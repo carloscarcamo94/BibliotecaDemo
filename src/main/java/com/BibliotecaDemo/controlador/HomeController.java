@@ -1,91 +1,61 @@
 package com.BibliotecaDemo.controlador;
 
-import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-import com.BibliotecaDemo.models.Autor;
-import com.BibliotecaDemo.models.Clasificacion;
-import com.BibliotecaDemo.models.Editorial;
 import com.BibliotecaDemo.models.Libro;
-import com.BibliotecaDemo.services.AutorService;
-import com.BibliotecaDemo.services.ClasificacionService;
-import com.BibliotecaDemo.services.EditorialService;
 import com.BibliotecaDemo.services.LibroService;
 
 @Controller
+@RequestMapping("/")
 public class HomeController {
-	
-	@GetMapping("/")
-    public String mostrarHome(Model model) throws ParseException {
 
-        // Datos generales
-        String mensaje = "Bienvenido a la Biblioteca Central";
-        LocalDate fecha = LocalDate.now();
-        model.addAttribute("mensaje", mensaje);
-        model.addAttribute("fecha", fecha);
+    @Autowired
+    private LibroService libroService; // ✅ solo usamos el servicio
 
-        List<Libro> libros = libroService.getLibros();
-        List<Autor> autores = autorService.getAutores();
-        List<Editorial> editoriales = editorialService.getEditoriales();
-        List<Clasificacion> clasificaciones = clasificacionService.getClasificaciones();
-
-        model.addAttribute("libros", libros);
-        model.addAttribute("autores", autores);
-        model.addAttribute("editoriales", editoriales);
-        model.addAttribute("clasificaciones", clasificaciones);
-
+    // Página principal: muestra el listado de libros
+    @GetMapping
+    public String home(Model model) {
+        List<Libro> lista = libroService.listarLibros();
+        model.addAttribute("libros", lista);
         return "home";
     }
-	
-	
-		@Autowired
-		private LibroService libroService;
-	
-		@GetMapping("/libros")
-		public String mostrarLibros(Model model) throws ParseException {
-		    List<Libro> listaLibros = libroService.getLibros();
-		    model.addAttribute("libros", listaLibros);
-		    return "LibrosListado";
-		}
 
+    // Formulario para crear nuevo libro
+    @GetMapping("/libro/nuevo")
+    public String nuevoLibroForm(Model model) {
+        model.addAttribute("libro", new Libro());
+        return "nuevo_libro";
+    }
 
-		@Autowired
-		private AutorService autorService;
+    // Guardamos un nuevo libro
+    @PostMapping("/libro/guardar")
+    public String guardarLibro(@ModelAttribute Libro libro) {
+        libroService.guardarLibro(libro);
+        return "redirect:/";
+    }
 
-		@GetMapping("/autores")
-		public String mostrarAutores(Model model) {
-		    List<Autor> listaAutores = autorService.getAutores();
-		    model.addAttribute("autores", listaAutores);
-		    return "AutoresListado";
-		}
+    // Mostramos los detalles de un libro específico
+    @GetMapping("/libro/editar/{idInventario}")
+    public String verLibro(@PathVariable("idInventario") int idInventario, Model model) {
+        Libro libro = libroService.obtenerLibroPorId(idInventario);
+        model.addAttribute("libro", libro);
+        return "editar_libro";
+    }
+    // Actualizamos el libro
+    @PostMapping("/libro/modificar")
+    public String modificarLibro(@ModelAttribute Libro libro) {
+        libroService.modificarLibro(libro);
+        return "redirect:/";
+    }
 
-		
-		@Autowired
-		private EditorialService editorialService;
-
-		@GetMapping("/editoriales")
-		public String mostrarEditoriales(Model model) {
-		    List<Editorial> listaEditoriales = editorialService.getEditoriales();
-		    model.addAttribute("editoriales", listaEditoriales);
-		    return "EditorialesListado";
-		}
-
-		
-		@Autowired
-		private ClasificacionService clasificacionService;
-
-		@GetMapping("/clasificaciones")
-		public String mostrarClasificaciones(Model model) {
-		    List<Clasificacion> listaClasificaciones = clasificacionService.getClasificaciones();
-		    model.addAttribute("clasificaciones", listaClasificaciones);
-		    return "ClasificacionesListado";
-		}
-
-	}
-
+    // Eliminamos un libro por ID
+    @GetMapping("/libro/eliminar/{idInventario}")
+    public String eliminarLibro(@PathVariable("idInventario") int idInventario) {
+        libroService.eliminarLibro(idInventario);
+        return "redirect:/";
+    }
+}
